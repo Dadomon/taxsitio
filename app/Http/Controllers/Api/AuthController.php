@@ -75,7 +75,6 @@ class AuthController extends Controller{
     
         $user = User::where('email', $request->email)->first();
 
-        $user->tokens()->delete();
     
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json(
@@ -84,6 +83,8 @@ class AuthController extends Controller{
                     'mensaje' =>'Usuario y/o contraseña incorrecta.'
                 ],401);
         }
+        $user->tokens()->delete();
+
         return response()->json(
             [
                 'status' => 200,
